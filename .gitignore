@@ -1,0 +1,12 @@
+# Other
+.vscode/
+
+# Build files
+CMakeFiles/
+CMakeCache.txt
+Makefile
+myogl
+cmake_install.cmake
+
+# Libraries
+libs/glfw/
