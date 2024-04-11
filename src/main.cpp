@@ -5,12 +5,19 @@
 #include <fstream>
 #include <sstream>
 
+#define WINDOW_WIDTH 400
+#define WINDOW_HEIGHT 300
+
 // Triangle vertices
 float vertices[] = {
     -0.5f, -0.5f, 0.0f,
     0.5f, -0.5f, 0.0f,
     0.0f,  0.5f, 0.0f
 };
+
+void debugMsg(std::string source, std::string error) {
+    std::cout << "[DEBUG] " << source << ": " << error << std::endl;
+}
 
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -22,13 +29,14 @@ GLuint genShader(GLenum type, std::string file) {
     GLuint shader = glCreateShader(type);
 
     std::string shaderSource;
-    std::fstream shaderFile(file, std::ios::in);
+    std::ifstream shaderFile(file);
+
     if (shaderFile.is_open()) {
         std::stringstream sstream;
         sstream << shaderFile.rdbuf();
         shaderSource = sstream.str();
         shaderFile.close();
-    }
+    } else debugMsg("Shader", "Failed to read file");
 
     const char* shaderSourcePointer = shaderSource.c_str();
 
@@ -42,7 +50,7 @@ GLuint genShader(GLenum type, std::string file) {
     if (!result) {
         char infoLog[infoLogLength];
         glGetShaderInfoLog(shader, infoLogLength, NULL, infoLog);
-        std::cout << "Shader: \n" << infoLog << std::endl;
+        debugMsg("Shader", infoLog);
     }
 
     return shader;
@@ -62,7 +70,7 @@ GLuint genProgram(GLuint &vertexShader, GLuint &fragmentShader) {
     if (!result) {
         char infoLog[infoLogLength];
         glGetProgramInfoLog(program, infoLogLength, NULL, infoLog);
-        std::cout << "Program: " << infoLog << std::endl;
+        debugMsg("Program", infoLog);
     }
 
     glDetachShader(program, vertexShader);
@@ -75,10 +83,7 @@ GLuint genProgram(GLuint &vertexShader, GLuint &fragmentShader) {
 }
 
 int main(int argc, char** argv) {
-    const uint16_t WINDOW_WIDTH = 400;
-    const uint16_t WINDOW_HEIGHT = 300;
-
-    // Initialize GLFW to use OpenGL 4.5
+    // Initialize GLFW for use with OpenGL 4.5
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
@@ -86,33 +91,41 @@ int main(int argc, char** argv) {
 
     GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "RTX Graphics", NULL, NULL);
     if (window == NULL) {
-        std::cout << "GLFW: Failed to create window" << std::endl;
+        debugMsg("GLFW", "Failed to create window");
         glfwTerminate();
         return -1;
     } else glfwMakeContextCurrent(window);
 
-
     // Initialize GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "GLAD: Failed to initialize" << std::endl;
+        debugMsg("GLAD", "Failed to initialize");
         return -2;
     }
 
     // Setup viewport
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+    // Compile shaders
+    GLuint vertexShader   = genShader(GL_VERTEX_SHADER,   "src/shaders/shader.vert");
+    GLuint fragmentShader = genShader(GL_FRAGMENT_SHADER, "src/shaders/shader.frag");
+
+    // Create shader program
+    GLuint shaderProgram = genProgram(vertexShader, fragmentShader);
+
+    // Vertex array object
+    GLuint VAO;
+    glGenVertexArrays(1, &VAO);
+
     // Vertex buffer object
     GLuint VBO;
     glGenBuffers(1, &VBO);
+
+    // Bindings
+    glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // Generate shaders
-    GLuint vertexShader   = genShader(GL_VERTEX_SHADER,     "shaders/shader.vert");
-    GLuint fragmentShader = genShader(GL_FRAGMENT_SHADER,   "shaders/shader.frag");
-
-    // Shader program
-    GLuint shaderProgram = genProgram(vertexShader, fragmentShader);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
     // GLFW window loop
     while (!glfwWindowShouldClose(window)) {
@@ -122,6 +135,8 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
