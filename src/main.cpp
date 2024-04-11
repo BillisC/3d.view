@@ -10,9 +10,13 @@
 
 // Triangle vertices
 float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-    0.5f, -0.5f, 0.0f,
-    0.0f,  0.5f, 0.0f
+    -1.0f, -1.0f, 0.0f,
+    0.0f, -1.0f, 0.0f,
+    -0.5f, 0.0f, 0.0f,
+
+    0.0f, -1.0f, 0.0f,
+    1.0f, -1.0f, 0.0f,
+    0.5f, 0.0f, 0.0f
 };
 
 void debugMsg(std::string source, std::string error) {
@@ -136,11 +140,16 @@ int main(int argc, char** argv) {
 
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    // GL deallocation
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteProgram(shaderProgram);
 
     // Program termination
     glfwTerminate();
