@@ -1,19 +1,23 @@
+// Graphics Libraries
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+// C++ Libraries
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
-#define WINDOW_WIDTH 400
-#define WINDOW_HEIGHT 300
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 480
 
 // Triangle vertices
-float vertices[] = {
+float trA[] = {
     -1.0f, -1.0f, 0.0f,
     0.0f, -1.0f, 0.0f,
     -0.5f, 0.0f, 0.0f,
+};
 
+float trB[] = {
     0.0f, -1.0f, 0.0f,
     1.0f, -1.0f, 0.0f,
     0.5f, 0.0f, 0.0f
@@ -117,17 +121,24 @@ int main(int argc, char** argv) {
     GLuint shaderProgram = genProgram(vertexShader, fragmentShader);
 
     // Vertex array object
-    GLuint VAO;
-    glGenVertexArrays(1, &VAO);
+    GLuint VAO[2];
+    glGenVertexArrays(2, VAO);
 
     // Vertex buffer object
-    GLuint VBO;
-    glGenBuffers(1, &VBO);
+    GLuint VBO[2];
+    glGenBuffers(2, VBO);
 
     // Bindings
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBindVertexArray(VAO[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(trA), trA, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Bindings
+    glBindVertexArray(VAO[1]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(trB), trB, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
@@ -139,16 +150,19 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(VAO[0]);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        glBindVertexArray(VAO[1]);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
     // GL deallocation
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(2, VAO);
+    glDeleteBuffers(2, VBO);
     glDeleteProgram(shaderProgram);
 
     // Program termination
