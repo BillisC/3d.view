@@ -10,17 +10,22 @@
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
 
-// Triangle vertices
+// Triangles
 float trA[] = {
-    -1.0f, -1.0f, 0.0f,
-    0.0f, -1.0f, 0.0f,
-    -0.5f, 0.0f, 0.0f,
+    // vertices         //colors
+    -1.0f, -1.0f, 0.0f, 1.0f, 0.7f, 0.0f,
+    0.0f, -1.0f, 0.0f,  1.0f, 0.7f, 0.0f,
+    -0.5f, 0.0f, 0.0f,  1.0f, 0.7f, 0.0f,
+
+    0.0f, -1.0f, 0.0f, 1.0f, 0.7f, 0.0f,
+    1.0f, -1.0f, 0.0f, 1.0f, 0.7f, 0.0f,
+    0.5f, 0.0f, 0.0f,  1.0f, 0.7f, 0.0f
 };
 
 float trB[] = {
-    0.0f, -1.0f, 0.0f,
-    1.0f, -1.0f, 0.0f,
-    0.5f, 0.0f, 0.0f
+    -0.5f, 0.0f, 0.0f, 1.0f, 0.7f, 0.0f,
+    0.5f, 0.0f, 0.0f,  1.0f, 0.7f, 0.0f,
+    0.0f, 1.0f, 0.0f,  1.0f, 0.7f, 0.0f
 };
 
 void debugMsg(std::string source, std::string error) {
@@ -128,31 +133,35 @@ int main(int argc, char** argv) {
     GLuint VBO[2];
     glGenBuffers(2, VBO);
 
-    // Bindings
+    // Bindings for trA
     glBindVertexArray(VAO[0]);
     glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(trA), trA, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(1);
 
-    // Bindings
+    // Bindings for trB
     glBindVertexArray(VAO[1]);
     glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(trB), trB, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     // GLFW window loop
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
 
-        glClearColor(1.0, 1.0, 1.0, 0.0);
+        glClearColor(0.0, 0.0, 0.0, 0.0);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
-        glBindVertexArray(VAO[0]);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
 
+        glBindVertexArray(VAO[0]);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(VAO[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
