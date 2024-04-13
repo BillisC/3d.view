@@ -6,11 +6,15 @@ set(GLAD_SOURCES_DIR "${PROJECT_SOURCE_DIR}/libs/glad/")
 add_subdirectory("${GLAD_SOURCES_DIR}")
 
 # Add GLFW3 library
-set(GLFW_SOURCES_DIR "${PROJECT_SOURCE_DIR}/libs/glfw/")
-add_subdirectory("${GLFW_SOURCES_DIR}")
+include(FetchContent)
+FetchContent_Declare(glfw
+    GIT_REPOSITORY https://github.com/glfw/glfw.git
+    GIT_SHALLOW TRUE)
+FetchContent_MakeAvailable(glfw)
 
 # Compile executable
-add_executable(myogl src/main.cpp)
+file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
+add_executable(myogl ${SOURCES})
 
 # Link executable
 target_include_directories(myogl PUBLIC "${PROJECT_SOURCE_DIR}/include/")

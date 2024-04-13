@@ -4,9 +4,14 @@
 # Build files
 CMakeFiles/
 CMakeCache.txt
-Makefile
-myogl
 cmake_install.cmake
+Makefile
 
-# Libraries
-libs/glfw/
+libs/glad/CMakeFiles/
+libs/glad/cmake_install.cmake
+libs/glad/Makefile
+
+myogl
+
+# Dependencies
+_deps/
