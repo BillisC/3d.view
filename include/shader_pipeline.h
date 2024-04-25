@@ -29,6 +29,7 @@ public:
     ~ShaderPipeline();
 
     void use() { glUseProgram(shaderProgram); }
+    void setUniMat4f(const std::string &name, const GLfloat *value) const;
 
 private:
     GLuint genShader(GLenum type, std::string file);

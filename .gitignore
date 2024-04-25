@@ -7,11 +7,11 @@ CMakeCache.txt
 cmake_install.cmake
 Makefile
 
-libs/glad/CMakeFiles/
-libs/glad/cmake_install.cmake
-libs/glad/Makefile
+include/glad/CMakeFiles/
+include/glad/cmake_install.cmake
+include/glad/Makefile
 
-myogl
+viewer
 
 # Dependencies
 _deps/

@@ -72,3 +72,8 @@ GLuint ShaderPipeline::genProgram() {
 
     return program;
 }
+
+void ShaderPipeline::setUniMat4f(const std::string &name, const GLfloat *value) const {
+    uint16_t uniLoc = glGetUniformLocation(this->shaderProgram, name.c_str());
+    glUniformMatrix4fv(uniLoc, 1, GL_FALSE, value);
+}

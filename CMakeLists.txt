@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
-project(MyOGL VERSION 0.1)
+project(3dview VERSION 0.1)
+
+# Add GLM library
+set(GLM_SOURCES_DIR "${PROJECT_SOURCE_DIR}/include/glm/")
+add_subdirectory("${GLM_SOURCES_DIR}")
 
 # Add GLAD library
-set(GLAD_SOURCES_DIR "${PROJECT_SOURCE_DIR}/libs/glad/")
+set(GLAD_SOURCES_DIR "${PROJECT_SOURCE_DIR}/include/glad/")
 add_subdirectory("${GLAD_SOURCES_DIR}")
 
 # Add GLFW3 library
@@ -14,8 +18,8 @@ FetchContent_MakeAvailable(glfw)
 
 # Compile executable
 file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
-add_executable(myogl ${SOURCES})
+add_executable(viewer ${SOURCES})
 
 # Link executable
-target_include_directories(myogl PUBLIC "${PROJECT_SOURCE_DIR}/include/")
-target_link_libraries(myogl PUBLIC glad glfw)
+target_include_directories(viewer PUBLIC "${PROJECT_SOURCE_DIR}/include/")
+target_link_libraries(viewer PUBLIC glm glad glfw)
