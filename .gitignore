@@ -1,15 +1,22 @@
 # Other
 .vscode/
 
-# Build files
+# Project build files
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 Makefile
 
+# Library cache
 include/glad/libglad.a
 include/glm/cmake_install.cmake
 
+# Project linting
+compile_commands.json
+.clang-format
+.cache/
+
+# Executables
 viewer
 
 # Dependencies

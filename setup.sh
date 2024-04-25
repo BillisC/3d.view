@@ -19,6 +19,6 @@ echo "Detected $CORES cores, using them all >:)"
 cmake --build . --config Debug -j $CORES
 
 echo "If the script ran successfully you may start the project with:"
-echo "                  ./path-to-project/myogl"
+echo "                  ./viewer"
 echo ""
 echo "Finito."
