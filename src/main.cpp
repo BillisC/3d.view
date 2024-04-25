@@ -40,7 +40,7 @@ GLuint genTexture(std::string path) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     int width, height, nrChannels;
-    unsigned char *data = stbi_load("wall.jpg", &width, &height, &nrChannels, 0);
+    unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
     if (data) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
     glGenBuffers(1, &EBO);
 
     // Texture
-    GLuint texture = genTexture("wall.jpg");
+    GLuint texture = genTexture("assets/wall.jpg");
 
     // Bindings for quad
     glBindVertexArray(VAO);
@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
 
         // Model transformation
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(-55.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, (float) glfwGetTime() * glm::radians(-55.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
         // View transformation
         glm::mat4 view = glm::mat4(1.0f);
@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
 
         // Apply projection
         glm::mat4 projection;
-        projection = glm::perspective(glm::radians(45.0f), (float)WINDOW_WIDTH/(float)WINDOW_HEIGHT, 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(45.0f), (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, 0.1f, 100.0f);
 
         (*pipeline).setUniMat4f("model", glm::value_ptr(model));
         (*pipeline).setUniMat4f("view", glm::value_ptr(view));

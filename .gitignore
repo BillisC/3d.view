@@ -7,9 +7,8 @@ CMakeCache.txt
 cmake_install.cmake
 Makefile
 
-include/glad/CMakeFiles/
-include/glad/cmake_install.cmake
-include/glad/Makefile
+include/glad/libglad.a
+include/glm/cmake_install.cmake
 
 viewer
 
