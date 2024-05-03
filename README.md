@@ -8,6 +8,7 @@ sudo apt install libwayland-dev libxkbcommon-dev xorg-dev
 ```
 Inside of the project's folder run the following to build it:
 ```
+cmake .
 cmake --build . --config Debug
 ```
 Finally run the linked executable with:
