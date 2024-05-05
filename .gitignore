@@ -13,7 +13,6 @@ include/glm/cmake_install.cmake
 
 # Project linting
 compile_commands.json
-.clang-format
 .cache/
 
 # Executables

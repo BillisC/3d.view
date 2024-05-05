@@ -16,6 +16,9 @@ FetchContent_Declare(glfw
     GIT_SHALLOW TRUE)
 FetchContent_MakeAvailable(glfw)
 
+# Parameters
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # <- use clangd
+
 # Compile executable
 file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 add_executable(viewer ${SOURCES})

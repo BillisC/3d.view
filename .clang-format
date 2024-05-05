@@ -1,0 +1,8 @@
+﻿---
+BasedOnStyle: LLVM
+AllowShortIfStatementsOnASingleLine: Always
+IndentWidth: '4'
+SortIncludes: 'false'
+TabWidth: '4'
+
+...
