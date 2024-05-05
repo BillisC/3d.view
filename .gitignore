@@ -16,7 +16,7 @@ compile_commands.json
 .cache/
 
 # Executables
-viewer
+viewer*
 
 # Dependencies
 _deps/
