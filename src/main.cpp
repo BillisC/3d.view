@@ -70,6 +70,9 @@ float pitch = 0.0f;
 float fov = 45.0f;
 bool firstMouse = 0.0f;
 
+// Delta time
+float deltaTime, lastTime = 0.0f;
+
 GLuint genTexture(std::string path) {
     // Generate texture buffer
     GLuint texture;
@@ -93,8 +96,9 @@ GLuint genTexture(std::string path) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
                      GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
-    } else
+    } else {
         debugMsg("Texture", "Failed to load image data");
+    }
 
     stbi_image_free(data);
 
@@ -141,11 +145,10 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
 }
 
 void processInput(GLFWwindow *window) {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    }
 
-    const float cameraSpeed = 0.05f; // adjust accordingly
+    const float cameraSpeed = 2.5f * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         cameraPos += cameraSpeed * cameraFront;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -221,6 +224,10 @@ int main(int argc, char **argv) {
     while (!glfwWindowShouldClose(window)) {
         // Event Handling
         processInput(window);
+
+        float currentTime = glfwGetTime();
+        deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
 
         // Clear window buffer
         glClearColor(0.0, 0.0, 0.0, 0.0);
