@@ -13,28 +13,27 @@
 #include "debug.h"
 
 struct ShaderPaths {
-    std::string vertexPath;
-    std::string fragmentPath;
+   std::string vertexPath;
+   std::string fragmentPath;
 };
 
 class ShaderPipeline {
-    GLuint shaderProgram;
+   GLuint shaderProgram;
 
-    // Shaders
-    GLuint vertexShader;
-    GLuint fragmentShader;
+   // Shaders
+   GLuint vertexShader;
+   GLuint fragmentShader;
 
-public:
-    ShaderPipeline(ShaderPaths paths);
-    ~ShaderPipeline();
+ public:
+   ShaderPipeline(ShaderPaths paths);
+   ~ShaderPipeline();
 
-    void use() { glUseProgram(shaderProgram); }
-    void setUniMat4f(const std::string &name, const GLfloat *value) const;
+   void use() { glUseProgram(shaderProgram); }
+   void setUniMat4f(const std::string &name, const GLfloat *value) const;
 
-private:
-    GLuint genShader(GLenum type, std::string file);
-    GLuint genProgram();
+ private:
+   GLuint genShader(GLenum type, std::string file);
+   GLuint genProgram();
 };
-
 
 #endif
