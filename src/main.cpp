@@ -12,6 +12,7 @@
 
 // Project Libraries
 #include "shader_pipeline.h"
+#include "camera.h"
 #include "debug.h"
 
 void debugMsg(std::string source, std::string error) {
@@ -66,16 +67,9 @@ float rect[] = {
 #define WINDOW_HEIGHT 500
 
 // Camera parameters
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
+Camera camera;
 float lastX = float(WINDOW_WIDTH) / 2;
 float lastY = float(WINDOW_HEIGHT) / 2;
-
-float yaw = -90.0f;
-float pitch = 0.0f;
-float fov = 45.0f;
 
 bool firstMouse = false;
 
@@ -129,48 +123,25 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
    lastX = xpos;
    lastY = ypos;
 
-   float sensitivity = 0.1f;
-   xoffset *= sensitivity;
-   yoffset *= sensitivity;
-
-   yaw += xoffset;
-   pitch += yoffset;
-
-   if (pitch > 89.0f)
-      pitch = 89.0f;
-   if (pitch < -89.0f)
-      pitch = -89.0f;
-
-   glm::vec3 direction;
-   direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-   direction.y = sin(glm::radians(pitch));
-   direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-   cameraFront = glm::normalize(direction);
+   camera.setDirection(xoffset, yoffset);
 }
 
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
-   fov -= (float)yoffset;
-   if (fov < 1.0f)
-      fov = 1.0f;
-   if (fov > 45.0f)
-      fov = 45.0f;
+   camera.setZoom((float)yoffset);
 }
 
 void processInput(GLFWwindow *window) {
    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
       glfwSetWindowShouldClose(window, true);
 
-   const float cameraSpeed = 2.3f * deltaTime;
    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-      cameraPos += cameraSpeed * cameraFront;
+      camera.moveForward(deltaTime);
    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-      cameraPos -= cameraSpeed * cameraFront;
+      camera.moveBackward(deltaTime);
    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-      cameraPos -=
-          glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+      camera.moveLeft(deltaTime);
    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-      cameraPos +=
-          glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+      camera.moveRight(deltaTime);
 }
 
 int main(int argc, char **argv) {
@@ -254,20 +225,12 @@ int main(int argc, char **argv) {
       // Model transformation
       glm::mat4 model = glm::mat4(1.0f);
 
-      // View transformation
-      glm::mat4 view = glm::lookAt(cameraPos,               // Camera position
-                                   cameraPos + cameraFront, // Camera target
-                                   cameraUp);               // Upwards vector
-
-      // Apply projection
-      glm::mat4 projection;
-      projection = glm::perspective(glm::radians(fov),
-                                    (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT,
-                                    0.1f, 100.0f);
-
       (*pipeline).setUniMat4f("model", glm::value_ptr(model));
-      (*pipeline).setUniMat4f("view", glm::value_ptr(view));
-      (*pipeline).setUniMat4f("projection", glm::value_ptr(projection));
+      (*pipeline).setUniMat4f("view", glm::value_ptr(camera.getView()));
+      (*pipeline).setUniMat4f(
+          "projection",
+          glm::value_ptr(camera.getProjection(
+              (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT, 0.1f, 100.0f)));
 
       // Draw window
       glBindTexture(GL_TEXTURE_2D, texture);
