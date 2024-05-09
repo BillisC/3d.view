@@ -22,43 +22,43 @@ void debugMsg(std::string source, std::string error) {
 // Rectangle
 /* clang-format off */
 float rect[] = {
-	//X     Y      Z     TX    TY
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f, 1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f, 1.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f, 0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
-	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f
+	//X     Y      Z     TX    TY     NX     NY     NZ
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,  0.0f,  0.0f, -1.0f,
+	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f,  0.0f,  0.0f, -1.0f,
+	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,  0.0f,  0.0f, -1.0f,
+	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,  0.0f,  0.0f, -1.0f,
+	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,  0.0f,  0.0f, -1.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,  0.0f,  0.0f, -1.0f,
+	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,  0.0f,  0.0f,  1.0f,
+	 0.5f, -0.5f,  0.5f, 1.0f, 0.0f,  0.0f,  0.0f,  1.0f,
+	 0.5f,  0.5f,  0.5f, 1.0f, 1.0f,  0.0f,  0.0f,  1.0f,
+	 0.5f,  0.5f,  0.5f, 1.0f, 1.0f,  0.0f,  0.0f,  1.0f,
+	-0.5f,  0.5f,  0.5f, 0.0f, 1.0f,  0.0f,  0.0f,  1.0f,
+	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,  0.0f,  0.0f,  1.0f,
+	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f, -1.0f,  0.0f,  0.0f,
+	-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, -1.0f,  0.0f,  0.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, -1.0f,  0.0f,  0.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, -1.0f,  0.0f,  0.0f,
+	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
+	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f, -1.0f,  0.0f,  0.0f,
+	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f,  1.0f,  0.0f,  0.0f,
+	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,  1.0f,  0.0f,  0.0f,
+	 0.5f, -0.5f, -0.5f, 0.0f, 1.0f,  1.0f,  0.0f,  0.0f,
+	 0.5f, -0.5f, -0.5f, 0.0f, 1.0f,  1.0f,  0.0f,  0.0f,
+	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f,  1.0f,  0.0f,  0.0f,
+	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f,  1.0f,  0.0f,  0.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,  0.0f, -1.0f,  0.0f,
+	 0.5f, -0.5f, -0.5f, 1.0f, 1.0f,  0.0f, -1.0f,  0.0f,
+	 0.5f, -0.5f,  0.5f, 1.0f, 0.0f,  0.0f, -1.0f,  0.0f,
+	 0.5f, -0.5f,  0.5f, 1.0f, 0.0f,  0.0f, -1.0f,  0.0f,
+	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,  0.0f, -1.0f,  0.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,  0.0f, -1.0f,  0.0f,
+	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,  0.0f,  1.0f,  0.0f,
+	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,  0.0f,  1.0f,  0.0f,
+	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f,  0.0f,  1.0f,  0.0f,
+	 0.5f,  0.5f,  0.5f, 1.0f, 0.0f,  0.0f,  1.0f,  0.0f,
+	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f,  0.0f,  1.0f,  0.0f,
+	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,  0.0f,  1.0f,  0.0f
 };
 /* clang-format on */
 
@@ -145,7 +145,7 @@ void processInput(GLFWwindow *window) {
 }
 
 int main(int argc, char **argv) {
-   // Initialize GLFW for use with OpenGL 4.5
+   // --- Initialize GLFW for use with OpenGL 4.5 ---
    glfwInit();
    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
@@ -176,37 +176,53 @@ int main(int argc, char **argv) {
    // Setup viewport
    glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-   // Create shader program
-   ShaderPaths paths = {"src/shaders/shader.vert", "src/shaders/shader.frag"};
-   ShaderPipeline *pipeline = new ShaderPipeline(paths);
+   // --- Create shader programs ---
+   ShaderPaths cubePaths = {"src/shaders/cubeShader.vert",
+                            "src/shaders/cubeShader.frag"};
+   ShaderPipeline *cubePipeline = new ShaderPipeline(cubePaths);
 
-   // Generate buffer objects
-   GLuint VAO, VBO;
-   glGenVertexArrays(1, &VAO); // Vertex Array Object
-   glGenBuffers(1, &VBO);      // Vertex Buffer Object
+   ShaderPaths lightPaths = {"src/shaders/lightShader.vert",
+                             "src/shaders/lightShader.frag"};
+   ShaderPipeline *lightPipeline = new ShaderPipeline(lightPaths);
 
-   // Bindings for rect
-   glBindVertexArray(VAO);
+   // --- Generate model buffer object ---
+   GLuint VBO;
+   glGenBuffers(1, &VBO); // Vertex Buffer Object
+
    glBindBuffer(GL_ARRAY_BUFFER, VBO);
    glBufferData(GL_ARRAY_BUFFER, sizeof(rect), rect, GL_STATIC_DRAW);
 
-   // Data structure
-   // | X Y Z | TX TY |
-   // |   0   |   1   |
-   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+   // --- Bindings for model attributes ---
+   GLuint cubeVAO;
+   glGenVertexArrays(1, &cubeVAO); // Vertex Array Object
+
+   glBindVertexArray(cubeVAO);
+   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                          (void *)0);
    glEnableVertexAttribArray(0);
-   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                          (void *)(3 * sizeof(float)));
    glEnableVertexAttribArray(1);
+   glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+                         (void *)(5 * sizeof(float)));
+   glEnableVertexAttribArray(2);
 
-   // Texture
+   // --- Bindings for light attributes ---
+   GLuint lightVAO;
+   glGenVertexArrays(1, &lightVAO); // Vertex Array Object
+
+   glBindVertexArray(lightVAO);
+   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+                         (void *)0);
+   glEnableVertexAttribArray(0);
+
+   // --- Texture ---
    GLuint texture = genTexture("assets/wall.jpg");
 
-   // Enable depth
+   // --- Enable depth ---
    glEnable(GL_DEPTH_TEST);
 
-   // GLFW window loop
+   // --- GLFW window loop ---
    while (!glfwWindowShouldClose(window)) {
       // Event Handling
       processInput(window);
@@ -220,21 +236,41 @@ int main(int argc, char **argv) {
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
       // Enable shader program
-      (*pipeline).use();
+      (*cubePipeline).use();
+      (*cubePipeline)
+          .setVec3("baseColor", glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
+      (*cubePipeline)
+          .setVec3("lightColor", glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
+      (*cubePipeline)
+          .setVec3("lightPos", glm::value_ptr(glm::vec3(1.2f, 1.0f, 2.0f)));
 
-      // Model transformation
+      // Model transformations
       glm::mat4 model = glm::mat4(1.0f);
+      (*cubePipeline).setMat4("model", glm::value_ptr(model));
+      (*cubePipeline).setMat4("view", glm::value_ptr(camera.getView()));
+      (*cubePipeline)
+          .setMat4("projection", glm::value_ptr(camera.getProjection(
+                                     (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT,
+                                     0.1f, 100.0f)));
 
-      (*pipeline).setUniMat4f("model", glm::value_ptr(model));
-      (*pipeline).setUniMat4f("view", glm::value_ptr(camera.getView()));
-      (*pipeline).setUniMat4f(
-          "projection",
-          glm::value_ptr(camera.getProjection(
-              (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT, 0.1f, 100.0f)));
-
-      // Draw window
+      // Draw object
       glBindTexture(GL_TEXTURE_2D, texture);
-      glBindVertexArray(VAO);
+      glBindVertexArray(cubeVAO);
+      glDrawArrays(GL_TRIANGLES, 0, 36);
+
+      // Same but for light
+      (*lightPipeline).use();
+
+      model = glm::mat4(1.0f);
+      model = glm::translate(model, glm::vec3(1.2f, 1.0f, 2.0f));
+      model = glm::scale(model, glm::vec3(0.4f));
+      (*lightPipeline).setMat4("model", glm::value_ptr(model));
+      (*lightPipeline).setMat4("view", glm::value_ptr(camera.getView()));
+      (*lightPipeline)
+          .setMat4("projection", glm::value_ptr(camera.getProjection(
+                                     (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT,
+                                     0.1f, 100.0f)));
+      glBindVertexArray(lightVAO);
       glDrawArrays(GL_TRIANGLES, 0, 36);
 
       glfwSwapBuffers(window);
@@ -242,9 +278,11 @@ int main(int argc, char **argv) {
    }
 
    // GL deallocation
-   glDeleteVertexArrays(1, &VAO);
+   glDeleteVertexArrays(1, &cubeVAO);
+   glDeleteVertexArrays(1, &lightVAO);
    glDeleteBuffers(1, &VBO);
-   delete pipeline;
+   delete cubePipeline;
+   delete lightPipeline;
 
    // Program termination
    glfwTerminate();

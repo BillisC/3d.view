@@ -29,7 +29,8 @@ class ShaderPipeline {
    ~ShaderPipeline();
 
    void use() { glUseProgram(shaderProgram); }
-   void setUniMat4f(const std::string &name, const GLfloat *value) const;
+   void setVec3(const std::string &name, const GLfloat *value) const;
+   void setMat4(const std::string &name, const GLfloat *value) const;
 
  private:
    GLuint genShader(GLenum type, std::string file);

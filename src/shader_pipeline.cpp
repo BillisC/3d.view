@@ -21,8 +21,9 @@ GLuint ShaderPipeline::genShader(GLenum type, std::string file) {
       sstream << shaderFile.rdbuf();
       shaderSource = sstream.str();
       shaderFile.close();
-   } else
+   } else {
       debugMsg("Shader", "Failed to read file");
+   }
 
    const char *shaderSourcePointer = shaderSource.c_str();
 
@@ -72,8 +73,14 @@ GLuint ShaderPipeline::genProgram() {
    return program;
 }
 
-void ShaderPipeline::setUniMat4f(const std::string &name,
-                                 const GLfloat *value) const {
+void ShaderPipeline::setVec3(const std::string &name,
+                             const GLfloat *value) const {
+   uint16_t uniLoc = glGetUniformLocation(this->shaderProgram, name.c_str());
+   glUniform3fv(uniLoc, 1, value);
+}
+
+void ShaderPipeline::setMat4(const std::string &name,
+                             const GLfloat *value) const {
    uint16_t uniLoc = glGetUniformLocation(this->shaderProgram, name.c_str());
    glUniformMatrix4fv(uniLoc, 1, GL_FALSE, value);
 }
