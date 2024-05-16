@@ -1,3 +1,4 @@
+#include "glm/fwd.hpp"
 #include <iostream>
 
 // Graphics Libraries
@@ -75,6 +76,9 @@ bool firstMouse = false;
 
 // Delta time
 float deltaTime, lastTime = 0.0f;
+
+// Light parameters
+glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
 
 GLuint genTexture(std::string path) {
    // Generate texture buffer
@@ -235,6 +239,10 @@ int main(int argc, char **argv) {
       glClearColor(0.0, 0.0, 0.0, 0.0);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+      // Light updates
+      lightPos.x = 1.0f + sin(glfwGetTime()) * 2.0f;
+      lightPos.y = sin(glfwGetTime() / 2.0f) * 1.0f;
+
       // Enable shader program
       (*cubePipeline).use();
       (*cubePipeline)
@@ -242,7 +250,7 @@ int main(int argc, char **argv) {
       (*cubePipeline)
           .setVec3("lightColor", glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
       (*cubePipeline)
-          .setVec3("lightPos", glm::value_ptr(glm::vec3(1.2f, 1.0f, 2.0f)));
+          .setVec3("lightPos", glm::value_ptr(lightPos));
 
       // Model transformations
       glm::mat4 model = glm::mat4(1.0f);
@@ -252,6 +260,7 @@ int main(int argc, char **argv) {
           .setMat4("projection", glm::value_ptr(camera.getProjection(
                                      (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT,
                                      0.1f, 100.0f)));
+      (*cubePipeline).setVec3("viewPos", glm::value_ptr(camera.getPos()));
 
       // Draw object
       glBindTexture(GL_TEXTURE_2D, texture);
@@ -262,7 +271,7 @@ int main(int argc, char **argv) {
       (*lightPipeline).use();
 
       model = glm::mat4(1.0f);
-      model = glm::translate(model, glm::vec3(1.2f, 1.0f, 2.0f));
+      model = glm::translate(model, lightPos);
       model = glm::scale(model, glm::vec3(0.4f));
       (*lightPipeline).setMat4("model", glm::value_ptr(model));
       (*lightPipeline).setMat4("view", glm::value_ptr(camera.getView()));

@@ -42,13 +42,16 @@ void Camera::setZoom(const float &yoffset) {
       fov = 45.0f;
 }
 
-glm::mat4 Camera::getView() {
+glm::vec3 Camera::getPos() const { return cameraPos; }
+
+glm::mat4 Camera::getView() const {
    return glm::lookAt(cameraPos,               // Camera position
                       cameraPos + cameraFront, // Camera target
                       cameraUp);               // Upwards vector
 }
 glm::mat4 Camera::getProjection(const float &width, const float &height,
-                                const float &nearPlane, const float &farPlane) {
+                                const float &nearPlane,
+                                const float &farPlane) const {
    return glm::perspective(glm::radians(fov), width / height, nearPlane,
                            farPlane);
 }

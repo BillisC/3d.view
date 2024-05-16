@@ -14,6 +14,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include "glm/detail/qualifier.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -47,9 +48,10 @@ class Camera {
 
    /// --- Projection ---
    void setZoom(const float &yoffset);
-   glm::mat4 getView();
+   glm::vec3 getPos() const;
+   glm::mat4 getView() const;
    glm::mat4 getProjection(const float &width, const float &height,
-                           const float &nearPlane, const float &farPlane);
+                           const float &nearPlane, const float &farPlane) const;
 };
 
 #endif
