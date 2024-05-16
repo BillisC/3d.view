@@ -260,7 +260,7 @@ int main(int argc, char **argv) {
           .setMat4("projection", glm::value_ptr(camera.getProjection(
                                      (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT,
                                      0.1f, 100.0f)));
-      (*cubePipeline).setVec3("viewPos", glm::value_ptr(camera.getPos()));
+      (*cubePipeline).setVec3("cameraPos", glm::value_ptr(camera.getPos()));
 
       // Draw object
       glBindTexture(GL_TEXTURE_2D, texture);
