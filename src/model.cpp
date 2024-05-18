@@ -10,6 +10,8 @@ void Model::Draw(ShaderPipeline &shaderPipeline) {
       meshes[i].Draw(shaderPipeline);
 }
 
+/// --- Model Processing ---
+
 void Model::loadModel(std::string path) {
    Assimp::Importer importer;
    const aiScene *scene = importer.ReadFile(
@@ -117,6 +119,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
    return Mesh(vertices, indices, textures);
 }
 
+/// --- Texture Handling ---
 std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat,
                                                  aiTextureType type,
                                                  std::string typeName) {
@@ -155,6 +158,7 @@ GLuint Model::TextureFromFile(const char *path, const std::string &directory,
    glGenTextures(1, &textureID);
 
    int width, height, nrComponents;
+   debugMsg("file", filename);
    unsigned char *data =
        stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
    if (data) {

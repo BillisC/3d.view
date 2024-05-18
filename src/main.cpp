@@ -168,7 +168,7 @@ int main(int argc, char **argv) {
    ShaderPipeline *lightPipeline = new ShaderPipeline(lightPaths);
 
    // Load model
-   Model loadedModel("model/backpack.obj");
+   Model loadedModel("assets/wood/wood.obj");
 
    // --- Generate model buffer object ---
    GLuint VBO;
@@ -199,7 +199,7 @@ int main(int argc, char **argv) {
       lastTime = currentTime;
 
       // Clear window buffer
-      glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+      glClearColor(0.01f, 0.01f, 0.01f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
       // Enable shader program
@@ -245,7 +245,9 @@ int main(int argc, char **argv) {
                                      (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT,
                                      0.1f, 100.0f)));
       glBindVertexArray(lightVAO);
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
       glDrawArrays(GL_TRIANGLES, 0, 36);
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
       glfwSwapBuffers(window);
       glfwPollEvents();

@@ -41,11 +41,12 @@ class Model {
    void Draw(ShaderPipeline &shaderPipeline);
 
  private:
+   /// --- Model Processing ---
    void loadModel(std::string path);
    void processNode(aiNode *node, const aiScene *scene);
    Mesh processMesh(aiMesh *mesh, const aiScene *scene);
 
-   // Texture Handling
+   /// --- Texture Handling ---
    std::vector<Texture> loadMaterialTextures(aiMaterial *mat,
                                              aiTextureType type,
                                              std::string typeName);
