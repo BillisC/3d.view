@@ -70,6 +70,7 @@ float rect[] = {
 Camera camera;
 float lastX = float(WINDOW_WIDTH) / 2;
 float lastY = float(WINDOW_HEIGHT) / 2;
+float acceleration = 1.0;
 
 bool firstMouse = false;
 
@@ -106,14 +107,20 @@ void processInput(GLFWwindow *window) {
    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
       glfwSetWindowShouldClose(window, true);
 
+   if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+      acceleration = 2.5f;
+   } else {
+      acceleration = 1.0f;
+   }
+
    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-      camera.moveForward(deltaTime);
+      camera.moveForward(deltaTime * acceleration);
    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-      camera.moveBackward(deltaTime);
+      camera.moveBackward(deltaTime * acceleration);
    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-      camera.moveLeft(deltaTime);
+      camera.moveLeft(deltaTime * acceleration);
    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-      camera.moveRight(deltaTime);
+      camera.moveRight(deltaTime * acceleration);
 }
 
 int main(int argc, char **argv) {
