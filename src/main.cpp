@@ -210,26 +210,22 @@ int main(int argc, char **argv) {
           .setVec3("light.ambient",
                    glm::value_ptr(glm::vec3(0.2f, 0.2f, 0.2f)));
       (*modelPipeline)
-          .setVec3("light.diffuse",
-                   glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
-      (*modelPipeline)
           .setVec3("light.specular",
                    glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
-      (*modelPipeline).setVec3("lightPos", glm::value_ptr(lightPos));
 
-      // Model transformations
+      (*modelPipeline).setVec3("lightPos", glm::value_ptr(lightPos));
+      (*modelPipeline).setVec3("viewPos", glm::value_ptr(camera.getPos()));
+
+      // Transformations
       glm::mat4 model = glm::mat4(1.0f);
       model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
       model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
       (*modelPipeline).setMat4("model", glm::value_ptr(model));
-
-      // World transformations
       (*modelPipeline).setMat4("view", glm::value_ptr(camera.getView()));
       (*modelPipeline)
           .setMat4("projection", glm::value_ptr(camera.getProjection(
-                                     (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT,
+                                     (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT,
                                      0.1f, 100.0f)));
-      (*modelPipeline).setVec3("cameraPos", glm::value_ptr(camera.getPos()));
 
       loadedModel.Draw(*modelPipeline);
 
@@ -237,12 +233,12 @@ int main(int argc, char **argv) {
       (*lightPipeline).use();
       model = glm::mat4(1.0f);
       model = glm::translate(model, lightPos);
-      model = glm::scale(model, glm::vec3(0.4f));
+      model = glm::scale(model, glm::vec3(0.3f));
       (*lightPipeline).setMat4("model", glm::value_ptr(model));
       (*lightPipeline).setMat4("view", glm::value_ptr(camera.getView()));
       (*lightPipeline)
           .setMat4("projection", glm::value_ptr(camera.getProjection(
-                                     (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT,
+                                     (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT,
                                      0.1f, 100.0f)));
       glBindVertexArray(lightVAO);
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

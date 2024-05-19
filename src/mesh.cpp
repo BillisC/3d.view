@@ -25,8 +25,8 @@ void Mesh::setup() {
                 &indices[0], GL_STATIC_DRAW);
 
    // Vertex structure
-   // | Vrt | Ind | Tex | Tng | Btg |
-   // |  0  |  1  |  2  |  3  |  4  |
+   // | Pos | Ind | Tex |
+   // |  0  |  1  |  2  |
    glEnableVertexAttribArray(0);
    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)0);
    glEnableVertexAttribArray(1);
@@ -49,7 +49,6 @@ void Mesh::Draw(ShaderPipeline &shaderPipeline) {
    unsigned int diffuseNr = 1;
    unsigned int specularNr = 1;
    unsigned int normalNr = 1;
-   unsigned int heightNr = 1;
 
    for (unsigned int i = 0; i < textures.size(); i++) {
       glActiveTexture(GL_TEXTURE0 + i);
@@ -61,8 +60,6 @@ void Mesh::Draw(ShaderPipeline &shaderPipeline) {
          number = std::to_string(specularNr++);
       else if (name == "texture_normal")
          number = std::to_string(normalNr++);
-      else if (name == "texture_height")
-         number = std::to_string(heightNr++);
 
       shaderPipeline.setInt(("material." + name + number).c_str(), i);
       glBindTexture(GL_TEXTURE_2D, textures[i].id);

@@ -49,9 +49,7 @@ glm::mat4 Camera::getView() const {
                       cameraPos + cameraFront, // Camera target
                       cameraUp);               // Upwards vector
 }
-glm::mat4 Camera::getProjection(const float &width, const float &height,
-                                const float &nearPlane,
+glm::mat4 Camera::getProjection(const float &aspect, const float &nearPlane,
                                 const float &farPlane) const {
-   return glm::perspective(glm::radians(fov), width / height, nearPlane,
-                           farPlane);
+   return glm::perspective(glm::radians(fov), aspect, nearPlane, farPlane);
 }

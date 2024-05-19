@@ -1,22 +1,21 @@
 #version 450 core
-in vec2 TexCoord;
-in vec3 Normal;
-in vec3 FragPos;
-in vec3 LightPos;
-
 out vec4 FragColor;
+
+in vec2 TexCoord;
+in TANGENT {
+    vec3 TangentLightPos;
+    vec3 TangentViewPos;
+    vec3 TangentFragPos;
+} tng;
 
 struct Material {
     sampler2D texture_diffuse1;
-    sampler2D texture_diffuse2;
-    sampler2D texture_diffuse3;
+    sampler2D texture_normal1;
     sampler2D texture_specular1;
-    sampler2D texture_specular2;
 };
 
 struct Light {
     vec3 ambient;
-    vec3 diffuse;
     vec3 specular;
     vec3 color;
 };
@@ -28,14 +27,17 @@ void main() {
     // Ambient Light
     vec3 ambientLight = light.ambient * texture(material.texture_diffuse1, TexCoord).rgb * light.color;
 
+    // Normal Map
+    vec3 norm = texture(material.texture_normal1, TexCoord).rgb;
+    norm = normalize(norm * 2.0 - 1.0);
+
     // Diffuse Light
-    vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(LightPos - FragPos);
+    vec3 lightDir = normalize(tng.TangentLightPos - tng.TangentFragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuseLight = light.diffuse * diff * texture(material.texture_diffuse1, TexCoord).rgb * light.color;
+    vec3 diffuseLight = diff * texture(material.texture_diffuse1, TexCoord).rgb * light.color;
 
     // Specular Light
-    vec3 viewDir = normalize(-FragPos);
+    vec3 viewDir = normalize(tng.TangentViewPos - tng.TangentFragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     vec3 specular = light.specular * spec * texture(material.texture_specular1, TexCoord).rgb * light.color;

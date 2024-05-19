@@ -50,8 +50,8 @@ class Camera {
    void setZoom(const float &yoffset);
    glm::vec3 getPos() const;
    glm::mat4 getView() const;
-   glm::mat4 getProjection(const float &width, const float &height,
-                           const float &nearPlane, const float &farPlane) const;
+   glm::mat4 getProjection(const float &aspect, const float &nearPlane,
+                           const float &farPlane) const;
 };
 
 #endif
