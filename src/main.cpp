@@ -11,6 +11,7 @@
 
 // Project Libraries
 #include "shader_pipeline.h"
+#include "light_source.h"
 #include "model.h"
 #include "camera.h"
 #include "debug.h"
@@ -18,49 +19,6 @@
 void debugMsg(std::string source, std::string error) {
    std::cout << "[DEBUG] " << source << ": " << error << "\n" << std::flush;
 }
-
-// Rectangle
-/* clang-format off */
-float rect[] = {
-	//X     Y      Z 
-	-0.5f, -0.5f, -0.5f,
-	 0.5f, -0.5f, -0.5f,
-	 0.5f,  0.5f, -0.5f,
-	 0.5f,  0.5f, -0.5f,
-	-0.5f,  0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, -0.5f,  0.5f,
-	 0.5f, -0.5f,  0.5f,
-	 0.5f,  0.5f,  0.5f,
-	 0.5f,  0.5f,  0.5f,
-	-0.5f,  0.5f,  0.5f,
-	-0.5f, -0.5f,  0.5f,
-	-0.5f,  0.5f,  0.5f,
-	-0.5f,  0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, -0.5f,  0.5f,
-	-0.5f,  0.5f,  0.5f,
-	 0.5f,  0.5f,  0.5f,
-	 0.5f,  0.5f, -0.5f,
-	 0.5f, -0.5f, -0.5f,
-	 0.5f, -0.5f, -0.5f,
-	 0.5f, -0.5f,  0.5f,
-	 0.5f,  0.5f,  0.5f,
-	-0.5f, -0.5f, -0.5f,
-	 0.5f, -0.5f, -0.5f,
-	 0.5f, -0.5f,  0.5f,
-	 0.5f, -0.5f,  0.5f,
-	-0.5f, -0.5f,  0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f,  0.5f, -0.5f,
-	 0.5f,  0.5f, -0.5f,
-	 0.5f,  0.5f,  0.5f,
-	 0.5f,  0.5f,  0.5f,
-	-0.5f,  0.5f,  0.5f,
-	-0.5f,  0.5f, -0.5f
-};
-/* clang-format on */
 
 // Window defines
 #define WINDOW_WIDTH 500
@@ -78,7 +36,6 @@ bool firstMouse = false;
 float deltaTime, lastTime = 0.0f;
 
 // Light parameters
-glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
    glViewport(0, 0, width, height);
@@ -163,28 +120,15 @@ int main(int argc, char **argv) {
                              "src/shaders/modelShader.frag"};
    ShaderPipeline *modelPipeline = new ShaderPipeline(modelPaths);
 
-   ShaderPaths lightPaths = {"src/shaders/lightShader.vert",
-                             "src/shaders/lightShader.frag"};
+   ShaderPaths lightPaths = {"src/shaders/simpleShader.vert",
+                             "src/shaders/simpleShader.frag"};
    ShaderPipeline *lightPipeline = new ShaderPipeline(lightPaths);
+
+   // Create lamp
+   LightSource lamp(glm::vec3(1.2f, 1.0f, 2.0f));
 
    // Load model
    Model loadedModel("assets/wood/wood.obj");
-
-   // --- Generate model buffer object ---
-   GLuint VBO;
-   glGenBuffers(1, &VBO); // Vertex Buffer Object
-
-   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-   glBufferData(GL_ARRAY_BUFFER, sizeof(rect), rect, GL_STATIC_DRAW);
-
-   // --- Bindings for light attributes ---
-   GLuint lightVAO;
-   glGenVertexArrays(1, &lightVAO); // Vertex Array Object
-
-   glBindVertexArray(lightVAO);
-   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
-                         (void *)0);
-   glEnableVertexAttribArray(0);
 
    // --- Enable depth ---
    glEnable(GL_DEPTH_TEST);
@@ -204,17 +148,14 @@ int main(int argc, char **argv) {
 
       // Enable shader program
       (*modelPipeline).use();
+      (*modelPipeline).setVec3("light.color", glm::value_ptr(lamp.Color));
       (*modelPipeline)
-          .setVec3("light.color", glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
+          .setVec3("light.ambient", glm::value_ptr(lamp.AmbientStrength));
       (*modelPipeline)
-          .setVec3("light.ambient",
-                   glm::value_ptr(glm::vec3(0.2f, 0.2f, 0.2f)));
-      (*modelPipeline)
-          .setVec3("light.specular",
-                   glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
+          .setVec3("light.specular", glm::value_ptr(lamp.SpecularStrength));
 
-      (*modelPipeline).setVec3("lightPos", glm::value_ptr(lightPos));
-      (*modelPipeline).setVec3("viewPos", glm::value_ptr(camera.getPos()));
+      (*modelPipeline).setVec3("lightPos", glm::value_ptr(lamp.Position));
+      (*modelPipeline).setVec3("viewPos", glm::value_ptr(camera.Position));
 
       // Transformations
       glm::mat4 model = glm::mat4(1.0f);
@@ -232,17 +173,16 @@ int main(int argc, char **argv) {
       // Same but for light
       (*lightPipeline).use();
       model = glm::mat4(1.0f);
-      model = glm::translate(model, lightPos);
-      model = glm::scale(model, glm::vec3(0.3f));
+      model = glm::translate(model, lamp.Position);
+      model = glm::scale(model, glm::vec3(0.2f));
       (*lightPipeline).setMat4("model", glm::value_ptr(model));
       (*lightPipeline).setMat4("view", glm::value_ptr(camera.getView()));
       (*lightPipeline)
           .setMat4("projection", glm::value_ptr(camera.getProjection(
                                      (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT,
                                      0.1f, 100.0f)));
-      glBindVertexArray(lightVAO);
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-      glDrawArrays(GL_TRIANGLES, 0, 36);
+      lamp.Draw();
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
       glfwSwapBuffers(window);
@@ -250,8 +190,6 @@ int main(int argc, char **argv) {
    }
 
    // GL deallocation
-   glDeleteVertexArrays(1, &lightVAO);
-   glDeleteBuffers(1, &VBO);
    delete modelPipeline;
    delete lightPipeline;
 

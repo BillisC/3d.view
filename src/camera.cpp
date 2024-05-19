@@ -2,18 +2,18 @@
 
 /// --- Movement ---
 void Camera::moveForward(const float &deltaTime) {
-   cameraPos += (cameraSpeed * deltaTime) * cameraFront;
+   Position += (cameraSpeed * deltaTime) * cameraFront;
 }
 void Camera::moveBackward(const float &deltaTime) {
-   cameraPos -= (cameraSpeed * deltaTime) * cameraFront;
+   Position -= (cameraSpeed * deltaTime) * cameraFront;
 }
 void Camera::moveLeft(const float &deltaTime) {
-   cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) *
-                (cameraSpeed * deltaTime);
+   Position -= glm::normalize(glm::cross(cameraFront, cameraUp)) *
+               (cameraSpeed * deltaTime);
 }
 void Camera::moveRight(const float &deltaTime) {
-   cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) *
-                (cameraSpeed * deltaTime);
+   Position += glm::normalize(glm::cross(cameraFront, cameraUp)) *
+               (cameraSpeed * deltaTime);
 }
 
 /// --- Direction ---
@@ -42,12 +42,10 @@ void Camera::setZoom(const float &yoffset) {
       fov = 45.0f;
 }
 
-glm::vec3 Camera::getPos() const { return cameraPos; }
-
 glm::mat4 Camera::getView() const {
-   return glm::lookAt(cameraPos,               // Camera position
-                      cameraPos + cameraFront, // Camera target
-                      cameraUp);               // Upwards vector
+   return glm::lookAt(Position,               // Camera position
+                      Position + cameraFront, // Camera target
+                      cameraUp);              // Upwards vector
 }
 glm::mat4 Camera::getProjection(const float &aspect, const float &nearPlane,
                                 const float &farPlane) const {

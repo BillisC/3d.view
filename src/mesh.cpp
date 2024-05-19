@@ -25,8 +25,8 @@ void Mesh::setup() {
                 &indices[0], GL_STATIC_DRAW);
 
    // Vertex structure
-   // | Pos | Ind | Tex |
-   // |  0  |  1  |  2  |
+   // | Pos | Ind | Tex | Tng | Bng |
+   // |  0  |  1  |  2  |  3  |  4  |
    glEnableVertexAttribArray(0);
    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)0);
    glEnableVertexAttribArray(1);

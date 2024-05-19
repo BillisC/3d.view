@@ -20,7 +20,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 class Camera {
-   glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
    glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
    glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -32,10 +31,13 @@ class Camera {
    const float sensitivity = 0.1f;
 
  public:
+   glm::vec3 Position = glm::vec3(0.0f, 0.0f, 3.0f);
+
+ public:
    Camera() = default;
    Camera(const float fov, const glm::vec3 cameraPos,
           const glm::vec3 cameraFront)
-       : fov(fov), cameraPos(cameraPos), cameraFront(cameraFront) {}
+       : fov(fov), Position(cameraPos), cameraFront(cameraFront) {}
 
    /// --- Movement ---
    void moveForward(const float &deltaTime);
@@ -48,7 +50,6 @@ class Camera {
 
    /// --- Projection ---
    void setZoom(const float &yoffset);
-   glm::vec3 getPos() const;
    glm::mat4 getView() const;
    glm::mat4 getProjection(const float &aspect, const float &nearPlane,
                            const float &farPlane) const;
