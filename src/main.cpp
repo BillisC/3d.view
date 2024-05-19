@@ -211,7 +211,7 @@ int main(int argc, char **argv) {
                    glm::value_ptr(glm::vec3(0.2f, 0.2f, 0.2f)));
       (*modelPipeline)
           .setVec3("light.diffuse",
-                   glm::value_ptr(glm::vec3(0.5f, 0.5f, 0.5f)));
+                   glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
       (*modelPipeline)
           .setVec3("light.specular",
                    glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));

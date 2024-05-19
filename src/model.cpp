@@ -11,7 +11,6 @@ void Model::Draw(ShaderPipeline &shaderPipeline) {
 }
 
 /// --- Model Processing ---
-
 void Model::loadModel(std::string path) {
    Assimp::Importer importer;
    const aiScene *scene = importer.ReadFile(
@@ -24,6 +23,7 @@ void Model::loadModel(std::string path) {
       return;
    }
    directory = path.substr(0, path.find_last_of('/'));
+
    processNode(scene->mRootNode, scene);
 }
 
